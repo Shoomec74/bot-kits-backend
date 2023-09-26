@@ -23,7 +23,7 @@ export class Subscription {
   @Prop()
   cardMask: string;
 
-  @ApiProperty({ example: new Date() })
+  @ApiProperty({ example: new Date('2023-01-01') })
   @Prop({ default: new Date(), required: true })
   debitDate: Date;
 

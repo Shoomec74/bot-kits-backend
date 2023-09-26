@@ -8,7 +8,7 @@ export type PaymentDocument = HydratedDocument<Payment>;
 
 @Schema({ timestamps: true })
 export class Payment {
-  @ApiProperty({ example: new Date() })
+  @ApiProperty({ example: new Date('2023-01-01') })
   @Prop({ required: true })
   date: Date;
 

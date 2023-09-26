@@ -4,6 +4,7 @@ import { PaymentsService } from './payments.service';
 import { PaymentsController } from './payments.controller';
 import { Payment, PaymentSchema } from './schema/payment.schema';
 import { Profile, ProfileSchema } from 'src/profiles/schema/profile.schema';
+import { ProfilesModule } from 'src/profiles/profiles.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { Profile, ProfileSchema } from 'src/profiles/schema/profile.schema';
       { name: Payment.name, schema: PaymentSchema },
       { name: Profile.name, schema: ProfileSchema },
     ]),
+    ProfilesModule,
   ],
   controllers: [PaymentsController],
   providers: [PaymentsService],

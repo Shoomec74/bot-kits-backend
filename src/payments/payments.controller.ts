@@ -61,7 +61,7 @@ export class PaymentsController {
   @Post()
   create(
     @Req() req,
-    @Body() createPaymentDto: CreatePaymentDto,
+    @Body() createPaymentDto: Omit<CreatePaymentDto, 'profile'>,
   ): Promise<Payment> {
     const profile = req.user;
     return this.paymentsService.create({ ...createPaymentDto, profile });
