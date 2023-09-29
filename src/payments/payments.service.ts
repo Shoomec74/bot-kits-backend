@@ -57,7 +57,10 @@ export class PaymentsService {
     const paymentAggregate = await this.paymentModel
       .aggregate([
         {
-          $match: { $expr: { $eq: ['$profile', { $toObjectId: profileId }] } },
+          $match: {
+            successful: true,
+            $expr: { $eq: ['$profile', { $toObjectId: profileId }] },
+          },
         },
         { $group: { _id: '$operation', total: { $sum: '$amount' } } },
       ])
