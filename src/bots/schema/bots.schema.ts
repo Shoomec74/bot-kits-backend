@@ -1,72 +1,74 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { ApiProperty } from '@nestjs/swagger';
-import mongoose, { HydratedDocument, Document } from 'mongoose';
-import { IsString } from 'class-validator';
+import mongoose, { Document, HydratedDocument } from 'mongoose';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
 
 import { Profile } from '../../profiles/schema/profile.schema';
+import { TypeCommands, botCommands } from '../dto/constants/botCommands';
 
 export type BotDocument = HydratedDocument<Bot>;
 
 export class Messenger {
-  @ApiProperty({ example: 'VK' })
   @IsString()
+  @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ example: 'vk.com/club1245321223' })
-  @IsString()
-  page?: [string];
+  @IsArray()
+  @IsOptional()
+  pages?: string[];
 
-  @ApiProperty({ example: '1685494522:AAHzRs4YFqckLvBVARVoUL0c3B1GFqlDpo' })
   @IsString()
+  @IsOptional()
   accessKey?: string;
 
-  @ApiProperty({ example: 'some_url' })
   @IsString()
+  @IsOptional()
   url?: string;
 }
 
 @Schema(baseSchemaOptions)
 export class Bot extends Document {
-  @ApiProperty({
-    example:
-      'https://cdn.icon-icons.com/icons2/1233/PNG/512/1492718766-vk_83600.png',
+  @Prop({
+    required: true,
+    enum: ['template', 'custom'],
   })
-  @Prop()
-  icon: string;
+  type: 'template' | 'custom';
 
-  @ApiProperty({
-    example: 'Бот Автоответчик',
-  })
+  @Prop()
+  icon?: string;
+
   @Prop({
     required: true,
     minlength: 2,
     maxlength: 30,
   })
-  botName: string;
+  title: string;
 
-  @ApiProperty()
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' })
-  profile: Profile;
+  @Prop({ default: 'none' })
+  description?: string;
 
-  @ApiProperty({
-    example: {
-      name: 'VK',
-      page: 'vk.com/club1245321223',
-      accessKey: '1685494522:AAHzRs4YFqckLvBVARVoUL0c3B1GFqlDpo',
-      url: 'some_url',
-    },
-  })
+  @Prop([String])
+  features: string[];
+
   @Prop({
-    required: true,
-    type: Messenger,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Profile',
   })
-  messenger: Messenger;
+  profile?: Profile;
 
-  @ApiProperty()
-  @Prop({ type: {} })
-  botSettings: object;
+  @Prop([Messenger])
+  messengers: Messenger[];
+
+  @Prop({ type: Object })
+  settings?: object;
+
+  @Prop({
+    type: [String],
+    enum: Object.values(TypeCommands),
+    default: botCommands,
+  })
+  commands: TypeCommands[];
 }
 
 export const BotSchema = SchemaFactory.createForClass(Bot);

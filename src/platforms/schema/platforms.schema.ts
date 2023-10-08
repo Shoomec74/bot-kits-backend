@@ -27,25 +27,12 @@ class FormFields {
 
 @Schema(baseSchemaOptions)
 export class Platform {
-  @ApiProperty({
-    example:
-      'https://cdn.icon-icons.com/icons2/1233/PNG/512/1492718766-vk_83600.png',
-  })
   @Prop({ required: true })
   icon: string;
 
-  @ApiProperty({ example: 'VK' })
   @Prop({ required: true })
   title: string;
 
-  @ApiProperty({
-    example: {
-      name: true,
-      pages: true,
-      accessKey: false,
-      url: true,
-    },
-  })
   @Prop({ required: true, type: FormFields })
   formFields: FormFields;
 }

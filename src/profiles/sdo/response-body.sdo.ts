@@ -2,7 +2,6 @@ import {
   ApiPropertyFactory,
   IFieldDescription,
   createField,
-  createNestedObject,
 } from 'src/utils/apiPropertyFactory';
 
 const profileDescription: IFieldDescription[] = [

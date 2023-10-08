@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsObject, IsString, IsUrl } from 'class-validator';
+import { IsObject, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class UpdateBotDto {
   @ApiProperty({
@@ -13,9 +13,18 @@ export class UpdateBotDto {
     example: 'Бот Автоответчик',
   })
   @IsString()
-  botName?: string;
+  title?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ example: 'Бот для создания заказов' })
+  description?: string;
+
+  @IsOptional()
+  @ApiProperty({ example: ['Создание заказов', 'Редактирование заказов'] })
+  features?: string[];
 
   @ApiProperty()
   @IsObject()
-  botSettings?: object;
+  settings?: object;
 }

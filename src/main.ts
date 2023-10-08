@@ -1,23 +1,23 @@
-import { NestFactory } from "@nestjs/core";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
-import { AppModule } from "./app.module";
-import * as fs from "fs";
-import * as yaml from "js-yaml";
-import { ConfigService } from "@nestjs/config";
-import { ValidationDtoPipe } from "./auth/pipe/validation-dto.pipe";
-import helmet from "helmet";
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
+import * as fs from 'fs';
+import * as yaml from 'js-yaml';
+import { ConfigService } from '@nestjs/config';
+import { ValidationDtoPipe } from './auth/pipe/validation-dto.pipe';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
-  const port = configService.get("APP_PORT");
+  const port = configService.get('APP_PORT');
   app.useGlobalPipes(new ValidationDtoPipe());
   app.use(helmet());
   app.enableCors({
-    origin: configService.get("ALLOW_URL"),
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: ["Content-Type", "Accept", "Authorization"],
-    credentials: true
+    origin: configService.get('ALLOW_URL'),
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
+    credentials: true,
   });
   // Создаем экземпляр билдера Swagger-документации
   const config = new DocumentBuilder()
@@ -27,7 +27,6 @@ async function bootstrap() {
     .addTag('auth', 'Авторизация пользователей')
     .addTag('accounts', 'Аккаунты пользователей')
     .addTag('profiles', 'Профили пользователей')
-    .addTag('botTemplates', 'Шаблоны ботов')
     .addTag('bots', 'Боты')
     .addTag('botAccesses', 'Управление доступами к ботам')
     .addTag('platforms', 'Подключаемые платформы')
