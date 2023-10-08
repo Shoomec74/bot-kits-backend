@@ -1,6 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
-import { FromWhom, ToWhom } from '../schema/notifications.schema';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { FromWhom, ToWhom } from '../schema/notifications.schema';
 
 export class CreateNotificationDto {
   @ApiProperty({ description: 'id отправителя', nullable: false })

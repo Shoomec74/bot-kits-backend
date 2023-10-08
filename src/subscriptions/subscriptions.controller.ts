@@ -7,8 +7,6 @@ import {
   Post,
   Param,
 } from '@nestjs/common';
-import { SubscriptionsService } from './subscriptions.service';
-import { JwtGuard } from '../auth/guards/jwtAuth.guards';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -22,8 +20,12 @@ import {
   ApiTags,
   getSchemaPath,
 } from '@nestjs/swagger';
-import { Subscription } from './schema/subscription.schema';
+
 import { Payment } from 'src/payments/schema/payment.schema';
+
+import { SubscriptionsService } from './subscriptions.service';
+import { JwtGuard } from '../auth/guards/jwtAuth.guards';
+import { Subscription } from './schema/subscription.schema';
 
 @ApiTags('subscriptions')
 @ApiBearerAuth()

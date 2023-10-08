@@ -9,9 +9,6 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { PromocodesService } from './promocodes.service';
-import { CreatePromocodeDto } from './dto/create-promocode.dto';
-import { UpdatePromocodeDto } from './dto/update-promocode.dto';
 import {
   ApiTags,
   ApiOperation,
@@ -25,10 +22,15 @@ import {
   ApiBearerAuth,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
-import { Promocode } from './schema/promocode.schema';
+
 import { JwtGuard } from 'src/auth/guards/jwtAuth.guards';
 import { RolesGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+
+import { PromocodesService } from './promocodes.service';
+import { CreatePromocodeDto } from './dto/create-promocode.dto';
+import { UpdatePromocodeDto } from './dto/update-promocode.dto';
+import { Promocode } from './schema/promocode.schema';
 
 @UseGuards(JwtGuard)
 @ApiTags('promocodes')

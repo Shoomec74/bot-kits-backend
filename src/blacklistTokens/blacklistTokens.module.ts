@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+
 import { BlacklistTokensService } from './blacklistTokens.service';
 import {
   BlacklistTokens,

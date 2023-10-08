@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+
 import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
 
 export type BlacklistTokensDocument = Document & BlacklistTokens;

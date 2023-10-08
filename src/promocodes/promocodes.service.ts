@@ -5,11 +5,12 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
 import { CreatePromocodeDto } from './dto/create-promocode.dto';
 import { UpdatePromocodeDto } from './dto/update-promocode.dto';
-import { InjectModel } from '@nestjs/mongoose';
 import { Promocode } from './schema/promocode.schema';
-import { Model } from 'mongoose';
 
 @Injectable()
 export class PromocodesService {

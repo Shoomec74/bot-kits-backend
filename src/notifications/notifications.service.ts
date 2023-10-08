@@ -4,8 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Notification } from './schema/notifications.schema';
 import { Model, Error } from 'mongoose';
+
+import { Notification } from './schema/notifications.schema';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import UpdateNotificationDto from './dto/update-notification.dto';
 

@@ -1,6 +1,4 @@
 import { Controller, Get, Headers, UseGuards } from '@nestjs/common';
-import { BlacklistTokensService } from './blacklistTokens.service';
-import { JwtGuard } from 'src/auth/guards/jwtAuth.guards';
 import {
   ApiBearerAuth,
   ApiHeader,
@@ -8,6 +6,10 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
+
+import { JwtGuard } from 'src/auth/guards/jwtAuth.guards';
+
+import { BlacklistTokensService } from './blacklistTokens.service';
 
 @UseGuards(JwtGuard)
 @ApiTags('logout')

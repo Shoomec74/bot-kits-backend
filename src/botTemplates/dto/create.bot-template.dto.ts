@@ -1,6 +1,7 @@
 import { IsObject, IsOptional, IsString, IsUrl } from 'class-validator';
-import { BotTemplate } from '../schema/bot-template.schema';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { BotTemplate } from '../schema/bot-template.schema';
 
 export default class CreateBotTemplateDto implements Partial<BotTemplate> {
   @IsUrl()

@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { decode } from 'jsonwebtoken';
+
 import {
   BlacklistTokens,
   BlacklistTokensDocument,
 } from './schema/blacklistTokens.schema';
-import { decode } from 'jsonwebtoken';
 
 @Injectable()
 export class BlacklistTokensService {

@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+
 import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
 
 export type NotificationDocument = HydratedDocument<Notification>;

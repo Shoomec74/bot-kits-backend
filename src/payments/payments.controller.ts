@@ -9,8 +9,6 @@ import {
   Delete,
   Patch,
 } from '@nestjs/common';
-import { PaymentsService } from './payments.service';
-import { JwtGuard } from '../auth/guards/jwtAuth.guards';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -24,10 +22,14 @@ import {
   ApiTags,
   OmitType,
 } from '@nestjs/swagger';
-import { Payment } from './schema/payment.schema';
-import { CreatePaymentDto } from './dto/create-payment.dto';
+
 import { RolesGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+
+import { PaymentsService } from './payments.service';
+import { JwtGuard } from '../auth/guards/jwtAuth.guards';
+import { Payment } from './schema/payment.schema';
+import { CreatePaymentDto } from './dto/create-payment.dto';
 
 @ApiTags('payments')
 @ApiBearerAuth()

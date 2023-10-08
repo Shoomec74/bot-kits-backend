@@ -10,10 +10,6 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
-import { NotificationService } from './notifications.service';
-import { CreateNotificationDto } from './dto/create-notification.dto';
-import { Notification } from './schema/notifications.schema';
-import UpdateNotificationDto from './dto/update-notification.dto';
 import {
   ApiBody,
   ApiOperation,
@@ -24,8 +20,14 @@ import {
   ApiNotFoundResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
+
 import { RolesGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+
+import { NotificationService } from './notifications.service';
+import { CreateNotificationDto } from './dto/create-notification.dto';
+import { Notification } from './schema/notifications.schema';
+import UpdateNotificationDto from './dto/update-notification.dto';
 
 @ApiTags('notification')
 @ApiBearerAuth()

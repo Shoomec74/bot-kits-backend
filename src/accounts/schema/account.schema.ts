@@ -1,11 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document, HydratedDocument } from 'mongoose';
-
-import TypeAccount from '../types/type-account';
-import Role from '../types/role';
-import { ApiProperty } from '@nestjs/swagger';
-import { Profile } from 'src/profiles/schema/profile.schema';
-import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
 import {
   IsEmail,
   IsEnum,
@@ -14,6 +8,12 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
+
+import { Profile } from 'src/profiles/schema/profile.schema';
+import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
+
+import TypeAccount from '../types/type-account';
+import Role from '../types/role';
 
 export type AccountDocument = HydratedDocument<Account>;
 

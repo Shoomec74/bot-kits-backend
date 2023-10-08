@@ -4,15 +4,17 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
+import { Tariff } from 'src/tariffs/schema/tariff.schema';
+
 import {
   Subscription,
   SubscriptionDocument,
 } from './schema/subscription.schema';
-import { Model } from 'mongoose';
 import { Profile } from '../profiles/schema/profile.schema';
 import { CreateSubscriptionDto } from './dto/create-subscription.dto';
 import { Payment } from '../payments/schema/payment.schema';
-import { Tariff } from 'src/tariffs/schema/tariff.schema';
 
 @Injectable()
 export class SubscriptionsService {

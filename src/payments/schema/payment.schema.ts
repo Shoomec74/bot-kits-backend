@@ -1,9 +1,11 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose, { HydratedDocument } from 'mongoose';
+
 import { Profile } from 'src/profiles/schema/profile.schema';
-import TypeOperation from '../types/type-operation';
 import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
+
+import TypeOperation from '../types/type-operation';
 
 export type PaymentDocument = HydratedDocument<Payment>;
 

@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+
+import { Tariff, TariffSchema } from 'src/tariffs/schema/tariff.schema';
+
 import { SubscriptionsService } from './subscriptions.service';
 import { SubscriptionsController } from './subscriptions.controller';
 import { Subscription, SubscriptionSchema } from './schema/subscription.schema';
 import { Profile, ProfileSchema } from '../profiles/schema/profile.schema';
 import { Payment, PaymentSchema } from '../payments/schema/payment.schema';
-import { Tariff, TariffSchema } from 'src/tariffs/schema/tariff.schema';
 
 @Module({
   imports: [

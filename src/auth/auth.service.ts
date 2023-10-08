@@ -7,16 +7,19 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { HashService } from '../hash/hash.service';
+import { ConfigService } from '@nestjs/config';
+import axios from 'axios';
+
+import { Account } from 'src/accounts/schema/account.schema';
 import { Profile, ProfileDocument } from 'src/profiles/schema/profile.schema';
 import { ProfilesService } from 'src/profiles/profiles.service';
 import { AccountService } from 'src/accounts/accounts.service';
 import TypeAccount from 'src/accounts/types/type-account';
+
+import { HashService } from '../hash/hash.service';
 import { AuthDto } from './dto/auth.dto';
+
 //import Role from 'src/accounts/types/role';
-import { ConfigService } from '@nestjs/config';
-import axios from 'axios';
-import { Account } from 'src/accounts/schema/account.schema';
 
 export interface ITokens {
   accessToken: string;

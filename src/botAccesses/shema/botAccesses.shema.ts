@@ -1,11 +1,13 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, ValidateNested } from 'class-validator';
+
+import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
+
 import { Bot } from '../../bots/schema/bots.schema';
 import { Profile } from '../../profiles/schema/profile.schema';
 import { fullPermission, LEVEL_ACCESS, TPermission } from '../types/types';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, ValidateNested } from 'class-validator';
-import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
 
 export class Permission implements TPermission {
   @ApiProperty({ example: LEVEL_ACCESS.EDITOR })

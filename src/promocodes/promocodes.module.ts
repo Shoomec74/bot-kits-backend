@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+
+import { ProfilesModule } from 'src/profiles/profiles.module';
+
 import { PromocodesService } from './promocodes.service';
 import { PromocodesController } from './promocodes.controller';
-import { MongooseModule } from '@nestjs/mongoose';
 import { Promocode, PromocodeSchema } from './schema/promocode.schema';
-import { ProfilesModule } from 'src/profiles/profiles.module';
 
 @Module({
   imports: [

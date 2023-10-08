@@ -1,6 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Document } from 'mongoose';
+
 import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
 
 @Schema(baseSchemaOptions) //Включает поля createdAt и updatedAt

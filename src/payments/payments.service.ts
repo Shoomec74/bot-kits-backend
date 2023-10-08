@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Payment, PaymentDocument } from './schema/payment.schema';
 import { Model } from 'mongoose';
+
+import { Payment, PaymentDocument } from './schema/payment.schema';
 import { Profile } from '../profiles/schema/profile.schema';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 

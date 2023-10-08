@@ -6,8 +6,9 @@ import {
   IsUrl,
   ValidateNested,
 } from 'class-validator';
-import { Messenger } from '../schema/bots.schema';
 import { Type } from 'class-transformer';
+
+import { Messenger } from '../schema/bots.schema';
 
 export class CreateBotDto {
   @ApiProperty({

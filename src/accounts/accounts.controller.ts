@@ -11,14 +11,15 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { JwtGuard } from 'src/auth/guards/jwtAuth.guards';
+import { RolesGuard } from 'src/auth/guards/role.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+
 import { AccountService } from './accounts.service';
 import { Account } from './schema/account.schema';
 import { UpdateAccountDto } from './dto/update-account.dto';
-import { JwtGuard } from 'src/auth/guards/jwtAuth.guards';
 import { SingleAccountResponseBodyOK } from './sdo/response-body.sdo';
 import { AccountUpdateRequestBody } from './sdo/request-body.sdo';
-import { RolesGuard } from 'src/auth/guards/role.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @UseGuards(JwtGuard)
 @ApiTags('accounts')

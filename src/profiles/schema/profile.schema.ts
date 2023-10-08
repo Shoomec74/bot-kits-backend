@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose, { Document, HydratedDocument } from 'mongoose';
+
 import { Account } from 'src/accounts/schema/account.schema';
 import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
 

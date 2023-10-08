@@ -6,12 +6,13 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types, UpdateQuery } from 'mongoose';
 
+import { HashService } from 'src/hash/hash.service';
+import { ITokens } from 'src/auth/auth.service';
+
 import { Account, AccountDocument } from './schema/account.schema';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
-import { HashService } from 'src/hash/hash.service';
 import TypeAccount from './types/type-account';
-import { ITokens } from 'src/auth/auth.service';
 
 @Injectable()
 export class AccountService {

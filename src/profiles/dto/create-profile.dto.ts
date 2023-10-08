@@ -9,8 +9,10 @@ import {
   IsUrl,
   Length,
 } from 'class-validator';
+
 import { Account } from 'src/accounts/schema/account.schema';
 //create-profile.dto.ts
+
 export class CreateProfileDto {
   @ApiProperty({ example: 'Ivan Ivanov' })
   @IsString()

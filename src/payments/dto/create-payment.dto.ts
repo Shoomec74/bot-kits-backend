@@ -6,10 +6,12 @@ import {
   IsObject,
   IsString,
 } from 'class-validator';
-import TypeOperation from '../types/type-operation';
-import { Profile } from 'src/profiles/schema/profile.schema';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+
+import { Profile } from 'src/profiles/schema/profile.schema';
+
+import TypeOperation from '../types/type-operation';
 
 export class CreatePaymentDto {
   @ApiProperty({ example: '2023-01-03' })

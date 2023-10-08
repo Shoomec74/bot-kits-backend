@@ -9,12 +9,6 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
-import { BotAccessesService } from './botAccesses.service';
-import { CreateBotAccessDto } from './dto/create-bot-access.dto';
-import { UpdateBotAccessDto } from './dto/update-bot-access.dto';
-import { ShareBotAccessDto } from './dto/share-bot-access.dto';
-import { BotAccess, Permission } from './shema/botAccesses.shema';
-import { JwtGuard } from '../auth/guards/jwtAuth.guards';
 import {
   ApiTags,
   ApiOperation,
@@ -27,8 +21,16 @@ import {
   ApiBearerAuth,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
+
 import { RolesGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+
+import { BotAccessesService } from './botAccesses.service';
+import { CreateBotAccessDto } from './dto/create-bot-access.dto';
+import { UpdateBotAccessDto } from './dto/update-bot-access.dto';
+import { ShareBotAccessDto } from './dto/share-bot-access.dto';
+import { BotAccess, Permission } from './shema/botAccesses.shema';
+import { JwtGuard } from '../auth/guards/jwtAuth.guards';
 
 @ApiTags('botAccesses')
 @ApiBearerAuth()

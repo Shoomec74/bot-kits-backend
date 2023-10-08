@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean } from 'class-validator';
 import { HydratedDocument } from 'mongoose';
+
 import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
 
 export type PlatformDocument = HydratedDocument<Platform>;

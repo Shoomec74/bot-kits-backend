@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+
+import { ProfilesModule } from 'src/profiles/profiles.module';
+
 import {
   Notification,
   NotificationSchema,
 } from './schema/notifications.schema';
 import { NotificationController } from './notifications.controller';
 import { NotificationService } from './notifications.service';
-import { ProfilesModule } from 'src/profiles/profiles.module';
 
 @Module({
   imports: [

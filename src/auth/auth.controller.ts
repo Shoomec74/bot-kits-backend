@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Post,
-  UseGuards,
-  Req,
-  Body,
-  Get,
-  Redirect,
-} from '@nestjs/common';
-import { Request } from 'express';
-import { LocalGuard } from './guards/localAuth.guard';
+import { Controller, Post, UseGuards, Req, Body, Get } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -21,11 +11,16 @@ import {
   ApiNotFoundResponse,
   ApiConflictResponse,
 } from '@nestjs/swagger';
+import { Request } from 'express';
+
 import { ProfileDocument } from 'src/profiles/schema/profile.schema';
+import TypeAccount from 'src/accounts/types/type-account';
+import { Account } from 'src/accounts/schema/account.schema';
+
+import { LocalGuard } from './guards/localAuth.guard';
 import { AuthService, ITokens } from './auth.service';
 import { AuthDtoPipe } from './pipe/auth-dto.pipe';
 import { CombinedDto } from './dto/combined.dto';
-import TypeAccount from 'src/accounts/types/type-account';
 import { GoogleGuard } from './guards/google.guard';
 import {
   RefreshTokenRequestBody,
@@ -44,7 +39,6 @@ import {
   refreshTokenResponseBodyOK,
 } from './sdo/response-body.sdo';
 import { VkontakteGuard } from './guards/vkontakte.guards';
-import { Account } from 'src/accounts/schema/account.schema';
 import { TelegramGuard } from './guards/telegram.guard';
 
 interface RequestProfile extends Request {

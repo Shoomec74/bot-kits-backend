@@ -2,8 +2,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose, { HydratedDocument, Document } from 'mongoose';
 import { IsString } from 'class-validator';
-import { Profile } from '../../profiles/schema/profile.schema';
+
 import { baseSchemaOptions } from 'src/utils/baseSchemaOptions';
+
+import { Profile } from '../../profiles/schema/profile.schema';
 
 export type BotDocument = HydratedDocument<Bot>;
 

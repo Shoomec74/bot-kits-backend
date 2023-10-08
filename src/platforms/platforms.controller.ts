@@ -22,13 +22,14 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { RolesGuard } from 'src/auth/guards/role.guard';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+
 import { PlatformService } from './platforms.service';
 import { Platform } from './schema/platforms.schema';
 import { CreatePlatformDto } from './dto/create-platform.dto';
 import { UpdatePlatformDto } from './dto/update-platform.dto';
 import { JwtGuard } from '../auth/guards/jwtAuth.guards';
-import { RolesGuard } from 'src/auth/guards/role.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @UseGuards(JwtGuard)
 @ApiTags('platforms')

@@ -8,10 +8,10 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 import TypeAccount from '../types/type-account';
 import Role from '../types/role';
-import { Types } from 'mongoose';
 
 class Credentials {
   @IsEmail(

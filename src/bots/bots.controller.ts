@@ -21,6 +21,7 @@ import {
   ApiBearerAuth,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
+
 import { BotsService } from './bots.service';
 import { Bot } from './schema/bots.schema';
 import { CreateBotDto } from './dto/create-bot.dto';

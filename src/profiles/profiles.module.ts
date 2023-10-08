@@ -1,11 +1,13 @@
 ////scr/profiles/profiles.module.ts
 import { Module } from '@nestjs/common';
-import { ProfilesService } from './profiles.service';
-import { ProfilesController } from './profiles.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Profile, ProfileSchema } from './schema/profile.schema';
+
 import { HashService } from 'src/hash/hash.service';
 import { Account, AccountSchema } from 'src/accounts/schema/account.schema';
+
+import { ProfilesService } from './profiles.service';
+import { ProfilesController } from './profiles.controller';
+import { Profile, ProfileSchema } from './schema/profile.schema';
 
 @Module({
   imports: [

@@ -9,8 +9,6 @@ import {
   UseGuards,
   Headers,
 } from '@nestjs/common';
-import { ProfilesService } from './profiles.service';
-
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -23,14 +21,17 @@ import {
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
-import { Profile } from './schema/profile.schema';
-import { UpdateProfileDto } from './dto/update-profile.dto';
+
 import { JwtGuard } from 'src/auth/guards/jwtAuth.guards';
 import { Account } from 'src/accounts/schema/account.schema';
-import { UserProfileResponseBodyOK } from './sdo/response-body.sdo';
-import { SingleAccountResponseBodyOK } from 'src/accounts/sdo/response-body.sdo';
 import { RolesGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
+import { SingleAccountResponseBodyOK } from 'src/accounts/sdo/response-body.sdo';
+
+import { ProfilesService } from './profiles.service';
+import { Profile } from './schema/profile.schema';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { UserProfileResponseBodyOK } from './sdo/response-body.sdo';
 
 @UseGuards(JwtGuard)
 @ApiTags('profiles')
