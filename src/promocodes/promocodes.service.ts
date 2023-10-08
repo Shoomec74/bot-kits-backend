@@ -35,18 +35,17 @@ export class PromocodesService {
     try {
       const promocodes = await this.promocodes.find();
       if (promocodes.length === 0) {
-        throw new NotFoundException();
+        throw new NotFoundException('Нет ни одного промокода');
       }
       return promocodes;
     } catch (error) {
-      throw new NotFoundException('Нет ни одного промокода');
+      throw error;
     }
   }
 
   async findOne(id: string): Promise<Promocode> {
     try {
-      const promocode = await this.promocodes.findById({ _id: id }).exec();
-      return promocode;
+      return await this.promocodes.findById(id).exec();
     } catch (error) {
       throw new NotFoundException('Промокода с таким id нет');
     }
@@ -54,14 +53,13 @@ export class PromocodesService {
 
   async update(id: string, updatePromocodeDto: UpdatePromocodeDto) {
     try {
-      const promocode = await this.promocodes.findByIdAndUpdate(
+      return await this.promocodes.findByIdAndUpdate(
         id,
         {
           ...updatePromocodeDto,
         },
         { new: true },
       );
-      return promocode;
     } catch (error) {
       throw new Error('Что-то пошло не так');
     }
@@ -102,14 +100,14 @@ export class PromocodesService {
           HttpStatus.BAD_REQUEST,
         );
       }
-      const promocode = await this.promocodes.findOneAndUpdate(
+
+      return await this.promocodes.findOneAndUpdate(
         { code: code },
         {
           $inc: { activationCount: 1 },
         },
         { new: true },
       );
-      return promocode;
     } catch (error) {
       throw error;
     }
@@ -125,7 +123,7 @@ export class PromocodesService {
 
       return promocode;
     } catch (error) {
-      throw new NotFoundException('Промокода с таким id нет');
+      throw error;
     }
   }
 }

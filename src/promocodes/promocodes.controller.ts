@@ -47,8 +47,8 @@ export class PromocodesController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiConflictResponse({ description: 'Такой промокод уже существует' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
+  //@UseGuards(RolesGuard)
+  //@Roles('admin')
   @Post()
   create(@Body() createPromocodeDto: CreatePromocodeDto): Promise<Promocode> {
     return this.promocodesService.create(createPromocodeDto);
@@ -62,8 +62,8 @@ export class PromocodesController {
     type: [Promocode],
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
+  //@UseGuards(RolesGuard)
+  //@Roles('admin')
   @Get()
   findAll(): Promise<Promocode[]> {
     return this.promocodesService.findAll();
@@ -130,8 +130,8 @@ export class PromocodesController {
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
   @ApiBadRequestResponse({ description: 'Неверный запрос' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
+  //@UseGuards(RolesGuard)
+  //@Roles('admin')
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -154,8 +154,8 @@ export class PromocodesController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
+  //@UseGuards(RolesGuard)
+  //@Roles('admin')
   @Delete(':id')
   remove(@Param('id') id: string): Promise<Promocode> {
     return this.promocodesService.remove(id);
