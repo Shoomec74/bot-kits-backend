@@ -1,5 +1,5 @@
 //src/account/account.module.ts
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { AccountsService } from './accounts.service';
@@ -13,7 +13,7 @@ import { AccountsRepository } from './accounts.repository';
   imports: [
     MongooseModule.forFeature([{ name: Account.name, schema: AccountSchema }]),
     HashModule,
-    ProfilesModule,
+    forwardRef(() => ProfilesModule),
   ],
   controllers: [AccountsController],
   providers: [AccountsService, AccountsRepository],

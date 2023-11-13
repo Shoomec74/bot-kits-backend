@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
@@ -22,7 +22,7 @@ import { PartnershipModule } from 'src/partnership/partnership.module';
 @Module({
   imports: [
     HttpModule,
-    ProfilesModule,
+    forwardRef(() => ProfilesModule),
     AccountsModule,
     SharedAccessesModule,
     HashModule,

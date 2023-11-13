@@ -354,132 +354,39 @@ paths:
           description: Ресурс не найден
       tags: *ref_1
       security: *ref_3
-  /dev/api/tariffs:
-    get:
-      operationId: TariffsController_findAllTariffs
-      summary: Получить все тарифы
-      parameters: []
-      responses:
-        '200':
-          description: Тарифы успешно получены
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Tariff'
-        '403':
-          description: Отказ в доступе
-      tags: &ref_4
-        - tariffs
-      security: &ref_5
-        - bearer: []
+  /dev/api/profiles/add:
     post:
-      operationId: TariffsController_createTariff
-      summary: Добавить новый тариф
-      parameters: []
+      operationId: ProfilesController_addUser
+      summary: Добавление пользователя
+      parameters:
+        - name: ref
+          required: true
+          in: query
+          schema:
+            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateTariffDto'
+              $ref: '#/components/schemas/AddUserRequestBody'
       responses:
         '201':
-          description: Тариф успешно добавлен
+          description: Успешная добавление пользователя
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tariff'
+                $ref: '#/components/schemas/AddUserResponseBodyOK'
         '400':
-          description: Неверный запрос
-        '403':
-          description: Отказ в доступе
+          description: Некорректные данные
         '409':
-          description: Такой тариф уже существует
-      tags: *ref_4
-      security: *ref_5
-  /dev/api/tariffs/{id}:
-    get:
-      operationId: TariffsController_findTariffToId
-      summary: Получить тариф по id
-      parameters:
-        - name: id
-          required: true
-          in: path
-          description: Идентификатор тарифа
-          example: 64f81ba37571bfaac18a857f
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Тариф успешно получен
+          description: Аккаунт уже существует
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tariff'
-        '403':
-          description: Отказ в доступе
-        '404':
-          description: Ресурс не найден
-      tags: *ref_4
-      security: *ref_5
-    patch:
-      operationId: TariffsController_updateTariff
-      summary: Изменить данные тарифа по id
-      parameters:
-        - name: id
-          required: true
-          in: path
-          description: Идентификатор тарифа
-          example: 64f81ba37571bfaac18a857f
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateTariffDto'
-      responses:
-        '200':
-          description: Тариф успешно изменен
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Tariff'
-        '400':
-          description: Неверный запрос
-        '403':
-          description: Отказ в доступе
-        '404':
-          description: Ресурс не найден
-      tags: *ref_4
-      security: *ref_5
-    delete:
-      operationId: TariffsController_removeTariff
-      summary: Удалить тариф по id
-      parameters:
-        - name: id
-          required: true
-          in: path
-          description: Идентификатор тарифа
-          example: 64f81ba37571bfaac18a857f
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Тариф успешно удален
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Tariff'
-        '403':
-          description: Отказ в доступе
-        '404':
-          description: Ресурс не найден
-      tags: *ref_4
-      security: *ref_5
+                $ref: '#/components/schemas/AddUserResponseBodyNotOK'
+      tags: *ref_1
+      security: *ref_3
   /dev/api/accounts:
     get:
       operationId: AccountsController_findAll
@@ -493,9 +400,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Account'
-      tags: &ref_6
+      tags: &ref_4
         - accounts
-      security: &ref_7
+      security: &ref_5
         - bearer: []
   /dev/api/accounts/{id}:
     patch:
@@ -528,8 +435,8 @@ paths:
           description: Отказ в доступе
         '404':
           description: Ресурс не найден
-      tags: *ref_6
-      security: *ref_7
+      tags: *ref_4
+      security: *ref_5
   /dev/api/logout:
     get:
       operationId: BlacklistTokensController_addToken
@@ -568,6 +475,132 @@ paths:
       responses:
         '200':
           description: ''
+  /dev/api/tariffs:
+    get:
+      operationId: TariffsController_findAllTariffs
+      summary: Получить все тарифы
+      parameters: []
+      responses:
+        '200':
+          description: Тарифы успешно получены
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tariff'
+        '403':
+          description: Отказ в доступе
+      tags: &ref_6
+        - tariffs
+      security: &ref_7
+        - bearer: []
+    post:
+      operationId: TariffsController_createTariff
+      summary: Добавить новый тариф
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTariffDto'
+      responses:
+        '201':
+          description: Тариф успешно добавлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tariff'
+        '400':
+          description: Неверный запрос
+        '403':
+          description: Отказ в доступе
+        '409':
+          description: Такой тариф уже существует
+      tags: *ref_6
+      security: *ref_7
+  /dev/api/tariffs/{id}:
+    get:
+      operationId: TariffsController_findTariffToId
+      summary: Получить тариф по id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Идентификатор тарифа
+          example: 64f81ba37571bfaac18a857f
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Тариф успешно получен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tariff'
+        '403':
+          description: Отказ в доступе
+        '404':
+          description: Ресурс не найден
+      tags: *ref_6
+      security: *ref_7
+    patch:
+      operationId: TariffsController_updateTariff
+      summary: Изменить данные тарифа по id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Идентификатор тарифа
+          example: 64f81ba37571bfaac18a857f
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTariffDto'
+      responses:
+        '200':
+          description: Тариф успешно изменен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tariff'
+        '400':
+          description: Неверный запрос
+        '403':
+          description: Отказ в доступе
+        '404':
+          description: Ресурс не найден
+      tags: *ref_6
+      security: *ref_7
+    delete:
+      operationId: TariffsController_removeTariff
+      summary: Удалить тариф по id
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: Идентификатор тарифа
+          example: 64f81ba37571bfaac18a857f
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Тариф успешно удален
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tariff'
+        '403':
+          description: Отказ в доступе
+        '404':
+          description: Ресурс не найден
+      tags: *ref_6
+      security: *ref_7
   /dev/api/bot-accesses:
     post:
       operationId: BotAccessesController_createBotAccesses
@@ -1897,7 +1930,7 @@ components:
           description: ' '
         accounts:
           type: array
-          example:
+          example: &ref_22
             - 65196b9715b55bd51b039144
         success:
           type: boolean
@@ -1938,6 +1971,96 @@ components:
     UpdateProfileDto:
       type: object
       properties: {}
+    AddUserRequestBody:
+      type: object
+      properties:
+        password:
+          type: string
+          example: '123'
+          description: Пароль пользователя
+        email:
+          type: string
+          example: test@mail.ru
+          description: Email пользователя
+        phone:
+          type: string
+          example: '+79999999999'
+          description: Телефонный номер пользователя
+        username:
+          type: string
+          example: test
+          description: Имя пользователя
+      required:
+        - password
+        - email
+        - phone
+        - username
+    AddUserResponseBodyOK:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 65196b9715b55bd51b039144
+          description: ' '
+        username:
+          type: string
+          example: test
+          description: ' '
+        phone:
+          type: string
+          example: '+79999999999'
+          description: ' '
+        avatar:
+          type: string
+          example: https://i.pravatar.cc/300
+          description: ' '
+        balance:
+          type: number
+          example: 0
+          description: ' '
+        accounts:
+          type: array
+          example: *ref_22
+        success:
+          type: boolean
+          example: true
+      required:
+        - _id
+        - username
+        - phone
+        - avatar
+        - balance
+        - accounts
+    AddUserResponseBodyNotOK:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Аккаунт уже существует
+          description: Сообщение об ошибке
+        error:
+          type: string
+          example: Conflict
+          description: Тип ошибки
+        statusCode:
+          type: number
+          example: 409
+          description: HTTP-статус код
+    AccountUpdateRequestBody:
+      type: object
+      properties:
+        type:
+          type: string
+          example: local
+        role:
+          type: string
+          example: user
+        credentials:
+          type: object
+          example:
+            email: test@mail.ru
+      required:
+        - credentials
     Tariff:
       type: object
       properties:
@@ -1996,21 +2119,6 @@ components:
     UpdateTariffDto:
       type: object
       properties: {}
-    AccountUpdateRequestBody:
-      type: object
-      properties:
-        type:
-          type: string
-          example: local
-        role:
-          type: string
-          example: user
-        credentials:
-          type: object
-          example:
-            email: test@mail.ru
-      required:
-        - credentials
     CreateBotAccessDto:
       type: object
       properties:
@@ -2021,7 +2129,7 @@ components:
         permission:
           type: object
           description: уровень доступа
-          example: &ref_22
+          example: &ref_23
             voronki: viewer
       required:
         - botId
@@ -2143,7 +2251,7 @@ components:
         permission:
           type: object
           description: уровень доступа
-          example: *ref_22
+          example: *ref_23
       required:
         - email
         - permission
@@ -2317,7 +2425,7 @@ components:
         debitDate:
           format: date-time
           type: string
-          example: 2023-11-11T22:07:02.280Z
+          example: 2023-11-13T11:24:52.911Z
       required:
         - status
         - cardMask
@@ -2331,7 +2439,7 @@ components:
         date:
           format: date-time
           type: string
-          example: 2023-11-11T22:07:02.282Z
+          example: 2023-11-13T11:24:53.051Z
         amount:
           type: number
           example: 1000

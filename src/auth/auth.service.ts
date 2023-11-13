@@ -5,6 +5,8 @@ import {
   NotFoundException,
   HttpException,
   HttpStatus,
+  forwardRef,
+  Inject,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { HashService } from '../hash/hash.service';
@@ -31,6 +33,7 @@ export interface ITokens {
 export class AuthService {
   constructor(
     private jwtService: JwtService,
+    @Inject(forwardRef(() => ProfilesService))
     private profilesService: ProfilesService,
     private partnerShipService: PartnershipService,
     private accountsService: AccountsService,

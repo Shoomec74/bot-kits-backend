@@ -7,6 +7,7 @@ import { Profile, ProfileSchema } from './schema/profile.schema';
 import { Account, AccountSchema } from 'src/accounts/schema/account.schema';
 import { ProfilesRepository } from './profiles.repository';
 import { HashModule } from 'src/hash/hash.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { HashModule } from 'src/hash/hash.module';
       { name: Account.name, schema: AccountSchema },
     ]),
     HashModule,
+    AuthModule,
   ],
   controllers: [ProfilesController],
   providers: [ProfilesService, ProfilesRepository],

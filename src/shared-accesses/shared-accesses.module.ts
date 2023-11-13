@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { SharedAccessesService } from './shared-accesses.service';
 import { SharedAccessesGateway } from './gateway/shared-accesses.gateway';
 import { SharedAceessesRepository } from './shared-accesses.repository';
@@ -14,7 +14,7 @@ import { JwtModule } from '@nestjs/jwt';
       { name: SharedAccess.name, schema: SharedAccessSchema },
     ]),
     BlacklistTokensModule,
-    ProfilesModule,
+    forwardRef(() => ProfilesModule),
     JwtModule,
   ],
   providers: [

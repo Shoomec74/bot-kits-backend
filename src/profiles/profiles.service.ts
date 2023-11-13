@@ -5,6 +5,8 @@ import { Profile } from './schema/profile.schema';
 import { Account } from 'src/accounts/schema/account.schema';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfilesRepository } from './profiles.repository';
+import { AuthDto } from 'src/auth/dto/auth.dto';
+import TypeAccount from 'src/accounts/types/type-account';
 
 @Injectable()
 export class ProfilesService {
@@ -69,5 +71,13 @@ export class ProfilesService {
 
   async remove(id: string): Promise<Profile> {
     return await this.profilesRepository.remove(id);
+  }
+
+  async addUser(
+    authDto: AuthDto,
+    provider: TypeAccount = TypeAccount.LOCAL,
+    ref: string | null,
+  ): Promise<Account> {
+    return await this.profilesRepository.addUser(authDto, provider, ref);
   }
 }

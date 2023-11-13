@@ -1,16 +1,26 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { ClientSession, Model } from 'mongoose';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { Profile } from './schema/profile.schema';
 import { Account } from 'src/accounts/schema/account.schema';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import TypeAccount from 'src/accounts/types/type-account';
+import { AuthDto } from 'src/auth/dto/auth.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class ProfilesRepository {
   constructor(
     @InjectModel(Profile.name) private profileModel: Model<Profile>,
     @InjectModel(Account.name) private accountModel: Model<Account>,
+    @Inject(forwardRef(() => AuthService))
+    private authService: AuthService,
   ) {}
 
   async create(
@@ -90,5 +100,13 @@ export class ProfilesRepository {
 
   async remove(id: string): Promise<Profile> {
     return await this.profileModel.findByIdAndDelete(id).exec();
+  }
+
+  async addUser(
+    authDto: AuthDto,
+    provider: TypeAccount = TypeAccount.LOCAL,
+    ref: string | null,
+  ): Promise<Account> {
+    return await this.authService.registration(authDto, provider, ref);
   }
 }
