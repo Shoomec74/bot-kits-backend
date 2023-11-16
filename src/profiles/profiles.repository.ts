@@ -10,9 +10,10 @@ import { CreateProfileDto } from './dto/create-profile.dto';
 import { Profile } from './schema/profile.schema';
 import { Account } from 'src/accounts/schema/account.schema';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import TypeAccount from 'src/accounts/types/type-account';
-import { AuthDto } from 'src/auth/dto/auth.dto';
+// import TypeAccount from 'src/accounts/types/type-account';
+// import { AuthDto } from 'src/auth/dto/auth.dto';
 import { AuthService } from 'src/auth/auth.service';
+import { FindProfileDto } from './dto/find-profile.dto';
 
 @Injectable()
 export class ProfilesRepository {
@@ -102,11 +103,33 @@ export class ProfilesRepository {
     return await this.profileModel.findByIdAndDelete(id).exec();
   }
 
-  async addUser(
-    authDto: AuthDto,
-    provider: TypeAccount = TypeAccount.LOCAL,
-    ref: string | null,
-  ): Promise<Account> {
-    return await this.authService.registration(authDto, provider, ref);
+  // async addUser(
+  //   authDto: AuthDto,
+  //   provider: TypeAccount = TypeAccount.LOCAL,
+  //   ref: string | null,
+  // ): Promise<Account> {
+  //   return await this.authService.registration(authDto, provider, ref);
+  // }
+
+  async addUser(findProfileDto: FindProfileDto): Promise<Profile> {
+    // const account = await this.accountModel.findOne({
+    //   'credentials.email': email,
+    // });
+    // if (!account) {
+    //   throw new NotFoundException('Пользователь с указанным Email не найден');
+    //   console.log(666);
+    // }
+    // return account;
+    const { email, username, phone } = findProfileDto;
+    if (email) {
+      const account = await this.findAccountByEmail(email);
+      return account.profile;
+    } else {
+      if (username !== '') {
+        return await this.profileModel.findOne({ username: username });
+      } else {
+        return await this.profileModel.findOne({ phone: phone });
+      }
+    }
   }
 }

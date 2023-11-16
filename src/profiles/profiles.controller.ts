@@ -8,8 +8,8 @@ import {
   BadRequestException,
   UseGuards,
   Headers,
-  Post,
-  Query,
+  // Post,
+  // Query,
 } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 import {
@@ -39,9 +39,10 @@ import { SingleAccountResponseBodyOK } from 'src/accounts/sdo/response-body.sdo'
 import { RolesGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AddUserRequestBody } from './sdo/request-body.sdo';
-import { CombinedDto } from 'src/auth/dto/combined.dto';
-import TypeAccount from 'src/accounts/types/type-account';
+// import { CombinedDto } from 'src/auth/dto/combined.dto';
+// import TypeAccount from 'src/accounts/types/type-account';
 import { AuthDtoPipe } from 'src/auth/pipe/auth-dto.pipe';
+import { FindProfileDto } from './dto/find-profile.dto';
 
 @UseGuards(JwtGuard)
 @ApiTags('profiles')
@@ -66,6 +67,24 @@ export class ProfilesController {
   @Get()
   findAll(): Promise<Profile[]> {
     return this.profilesService.findAll();
+  }
+
+  @Get('add')
+  @UseGuards(RolesGuard)
+  @Roles('admin')
+  @ApiOperation({ summary: 'Добавление пользователя' })
+  @ApiBody({ type: AddUserRequestBody })
+  @ApiCreatedResponse({
+    description: 'Успешное добавление пользователя',
+    type: AddUserResponseBodyOK,
+  })
+  @ApiBadRequestResponse({ description: 'Некорректные данные' })
+  @ApiConflictResponse({
+    description: 'Пользователь не найден',
+    type: AddUserResponseBodyNotOK,
+  })
+  async addUser(@Body() findProfileDto: FindProfileDto) {
+    return await this.profilesService.addUser(findProfileDto);
   }
 
   @Get('me')
@@ -174,35 +193,35 @@ export class ProfilesController {
     return this.profilesService.remove(id);
   }
 
-  @Post('add')
-  @UseGuards(RolesGuard)
-  @Roles('admin')
-  @ApiOperation({ summary: 'Добавление пользователя' })
-  @ApiBody({ type: AddUserRequestBody })
-  @ApiCreatedResponse({
-    description: 'Успешная добавление пользователя',
-    type: AddUserResponseBodyOK,
-  })
-  @ApiBadRequestResponse({ description: 'Некорректные данные' })
-  @ApiConflictResponse({
-    description: 'Аккаунт уже существует',
-    type: AddUserResponseBodyNotOK,
-  })
-  async addUser(
-    @Body() combinedDto: CombinedDto,
-    @Query('ref') ref: string,
-  ): Promise<Account> {
-    const newAccount: CombinedDto = {
-      email: combinedDto.email,
-      password: combinedDto.password,
-      username: combinedDto.username,
-      phone: combinedDto.phone,
-      avatar: combinedDto.avatar,
-    };
-    const authDto = this.authDtoPipe.transform(newAccount, {
-      type: 'body',
-      data: 'combinedDto',
-    });
-    return await this.profilesService.addUser(authDto, TypeAccount.LOCAL, ref);
-  }
+  // @Post('add')
+  // @UseGuards(RolesGuard)
+  // @Roles('admin')
+  // @ApiOperation({ summary: 'Добавление пользователя' })
+  // @ApiBody({ type: AddUserRequestBody })
+  // @ApiCreatedResponse({
+  //   description: 'Успешное добавление пользователя',
+  //   type: AddUserResponseBodyOK,
+  // })
+  // @ApiBadRequestResponse({ description: 'Некорректные данные' })
+  // @ApiConflictResponse({
+  //   description: 'Аккаунт уже существует',
+  //   type: AddUserResponseBodyNotOK,
+  // })
+  // async addUser(
+  //   @Body() combinedDto: CombinedDto,
+  //   @Query('ref') ref: string,
+  // ): Promise<Account> {
+  //   const newAccount: CombinedDto = {
+  //     email: combinedDto.email,
+  //     password: combinedDto.password,
+  //     username: combinedDto.username,
+  //     phone: combinedDto.phone,
+  //     avatar: combinedDto.avatar,
+  //   };
+  //   const authDto = this.authDtoPipe.transform(newAccount, {
+  //     type: 'body',
+  //     data: 'combinedDto',
+  //   });
+  //   return await this.profilesService.addUser(authDto, TypeAccount.LOCAL, ref);
+  // }
 }

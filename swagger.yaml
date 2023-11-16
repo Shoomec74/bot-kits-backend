@@ -217,9 +217,39 @@ paths:
           description: Ресурс не найден
       tags: &ref_1
         - profiles
-      security: &ref_3
-        - &ref_2
+      security: &ref_2
+        - &ref_3
           bearer: []
+  /dev/api/profiles/add:
+    get:
+      operationId: ProfilesController_addUser
+      summary: Добавление пользователя
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddUserRequestBody'
+      responses:
+        '200':
+          description: ''
+        '201':
+          description: Успешное добавление пользователя
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddUserResponseBodyOK'
+        '400':
+          description: Некорректные данные
+        '409':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddUserResponseBodyNotOK'
+      tags: *ref_1
+      security: *ref_2
   /dev/api/profiles/me:
     get:
       operationId: ProfilesController_findProfileByToken
@@ -244,7 +274,7 @@ paths:
           description: Ресурс не найден
       tags: *ref_1
       security:
-        - *ref_2
+        - *ref_3
         - bearer: []
   /dev/api/profiles/{id}:
     get:
@@ -270,7 +300,7 @@ paths:
         '404':
           description: Ресурс не найден
       tags: *ref_1
-      security: *ref_3
+      security: *ref_2
     patch:
       operationId: ProfilesController_update
       summary: Обновить данные профиля по id
@@ -302,7 +332,7 @@ paths:
         '404':
           description: Ресурс не найден
       tags: *ref_1
-      security: *ref_3
+      security: *ref_2
     delete:
       operationId: ProfilesController_remove
       summary: Удалить профиль по id
@@ -326,7 +356,7 @@ paths:
         '404':
           description: Ресурс не найден
       tags: *ref_1
-      security: *ref_3
+      security: *ref_2
   /dev/api/profiles/{id}/accounts:
     get:
       operationId: ProfilesController_findAccountByProfileId
@@ -353,40 +383,7 @@ paths:
         '404':
           description: Ресурс не найден
       tags: *ref_1
-      security: *ref_3
-  /dev/api/profiles/add:
-    post:
-      operationId: ProfilesController_addUser
-      summary: Добавление пользователя
-      parameters:
-        - name: ref
-          required: true
-          in: query
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddUserRequestBody'
-      responses:
-        '201':
-          description: Успешная добавление пользователя
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddUserResponseBodyOK'
-        '400':
-          description: Некорректные данные
-        '409':
-          description: Аккаунт уже существует
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddUserResponseBodyNotOK'
-      tags: *ref_1
-      security: *ref_3
+      security: *ref_2
   /dev/api/accounts:
     get:
       operationId: AccountsController_findAll
@@ -1942,35 +1939,6 @@ components:
         - avatar
         - balance
         - accounts
-    SingleAccountResponseBodyOK:
-      type: object
-      properties:
-        _id:
-          type: string
-          example: 6516ab8f2c612e8cce53e45f
-        type:
-          type: string
-          example: local
-        role:
-          type: string
-          example: user
-        credentials:
-          type: object
-          example:
-            email: test@mail.ru
-            accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-            refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
-        profile:
-          type: string
-          example: 6516ab8f2c612e8cce53e45d
-        success:
-          type: boolean
-          example: true
-      required:
-        - credentials
-    UpdateProfileDto:
-      type: object
-      properties: {}
     AddUserRequestBody:
       type: object
       properties:
@@ -2046,6 +2014,35 @@ components:
           type: number
           example: 409
           description: HTTP-статус код
+    SingleAccountResponseBodyOK:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 6516ab8f2c612e8cce53e45f
+        type:
+          type: string
+          example: local
+        role:
+          type: string
+          example: user
+        credentials:
+          type: object
+          example:
+            email: test@mail.ru
+            accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+            refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+        profile:
+          type: string
+          example: 6516ab8f2c612e8cce53e45d
+        success:
+          type: boolean
+          example: true
+      required:
+        - credentials
+    UpdateProfileDto:
+      type: object
+      properties: {}
     AccountUpdateRequestBody:
       type: object
       properties:
@@ -2425,7 +2422,7 @@ components:
         debitDate:
           format: date-time
           type: string
-          example: 2023-11-13T11:24:52.911Z
+          example: 2023-11-16T12:54:11.502Z
       required:
         - status
         - cardMask
@@ -2439,7 +2436,7 @@ components:
         date:
           format: date-time
           type: string
-          example: 2023-11-13T11:24:53.051Z
+          example: 2023-11-16T12:54:11.525Z
         amount:
           type: number
           example: 1000

@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import mongoose, { ClientSession } from 'mongoose';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { Profile } from './schema/profile.schema';
 import { Account } from 'src/accounts/schema/account.schema';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfilesRepository } from './profiles.repository';
-import { AuthDto } from 'src/auth/dto/auth.dto';
-import TypeAccount from 'src/accounts/types/type-account';
+import { FindProfileDto } from './dto/find-profile.dto';
+// import { AuthDto } from 'src/auth/dto/auth.dto';
+// import TypeAccount from 'src/accounts/types/type-account';
 
 @Injectable()
 export class ProfilesService {
@@ -73,11 +74,19 @@ export class ProfilesService {
     return await this.profilesRepository.remove(id);
   }
 
-  async addUser(
-    authDto: AuthDto,
-    provider: TypeAccount = TypeAccount.LOCAL,
-    ref: string | null,
-  ): Promise<Account> {
-    return await this.profilesRepository.addUser(authDto, provider, ref);
+  // async addUser(
+  //   authDto: AuthDto,
+  //   provider: TypeAccount = TypeAccount.LOCAL,
+  //   ref: string | null,
+  // ): Promise<Account> {
+  //   return await this.profilesRepository.addUser(authDto, provider, ref);
+  // }
+
+  async addUser(findProfileDto: FindProfileDto) {
+    const profile = await this.profilesRepository.addUser(findProfileDto);
+    if (profile) {
+      return { message: 'Пользователь успешно добавлен' };
+    }
+    throw new NotFoundException('Пользователь с указанными данными не найден');
   }
 }
