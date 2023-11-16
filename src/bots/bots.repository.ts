@@ -12,12 +12,28 @@ import {
   LEVEL_ACCESS,
 } from '../botAccesses/types/types';
 
+export abstract class RepositoryPort {
+  abstract create(arg1, arg2: CreateBotDto): Promise<Bot>;
+  abstract findOne(data: string): Promise<Bot>;
+  abstract findAllByUser(data: string): Promise<Bot[] | null>;
+  abstract findAll(): Promise<Bot[]>;
+  abstract findAllTemplates(): Promise<Bot[]>;
+  abstract remove(arg1: string, arg2: string): Promise<Bot>;
+  abstract share(
+    arg1: string,
+    arg2: string,
+    arg3: ShareBotDto,
+  ): Promise<string>;
+}
+
 @Injectable()
-export class BotsRepository {
+export class BotsRepository extends RepositoryPort {
   constructor(
     @InjectModel(Bot.name) private botModel: Model<BotDocument>,
     private readonly botAccessesService: BotAccessesService,
-  ) {}
+  ) {
+    super();
+  }
 
   async create(profile, createBotDto: CreateBotDto): Promise<Bot> {
     const bot = await new this.botModel({ ...createBotDto, profile }).save();
