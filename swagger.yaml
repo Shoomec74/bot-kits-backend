@@ -221,10 +221,15 @@ paths:
         - &ref_3
           bearer: []
   /dev/api/profiles/add:
-    get:
+    post:
       operationId: ProfilesController_addUser
       summary: Добавление пользователя
-      parameters: []
+      parameters:
+        - name: ref
+          required: true
+          in: query
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -232,8 +237,6 @@ paths:
             schema:
               $ref: '#/components/schemas/AddUserRequestBody'
       responses:
-        '200':
-          description: ''
         '201':
           description: Успешное добавление пользователя
           content:
@@ -243,7 +246,7 @@ paths:
         '400':
           description: Некорректные данные
         '409':
-          description: Пользователь не найден
+          description: Аккаунт уже существует
           content:
             application/json:
               schema:
@@ -2422,7 +2425,7 @@ components:
         debitDate:
           format: date-time
           type: string
-          example: 2023-11-16T12:54:11.502Z
+          example: 2023-11-17T09:28:40.698Z
       required:
         - status
         - cardMask
@@ -2436,7 +2439,7 @@ components:
         date:
           format: date-time
           type: string
-          example: 2023-11-16T12:54:11.525Z
+          example: 2023-11-17T09:28:40.760Z
         amount:
           type: number
           example: 1000

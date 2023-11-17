@@ -18,6 +18,7 @@ import { AuthDtoPipe } from './pipe/auth-dto.pipe';
 import { BlacklistTokensModule } from 'src/blacklistTokens/blacklistTokens.module';
 import { SharedAccessesModule } from 'src/shared-accesses/shared-accesses.module';
 import { PartnershipModule } from 'src/partnership/partnership.module';
+import { AdminAuthDtoPipe } from './pipe/admin-auth-dto.pipe';
 
 @Module({
   imports: [
@@ -36,8 +37,14 @@ import { PartnershipModule } from 'src/partnership/partnership.module';
     ]),
     BlacklistTokensModule,
   ],
-  providers: [AuthService, ...STRTAGIES, ...GUARDS, AuthDtoPipe],
-  exports: [AuthService, AuthDtoPipe],
+  providers: [
+    AuthService,
+    ...STRTAGIES,
+    ...GUARDS,
+    AuthDtoPipe,
+    AdminAuthDtoPipe,
+  ],
+  exports: [AuthService, AuthDtoPipe, AdminAuthDtoPipe],
   controllers: [AuthController],
 })
 export class AuthModule {}

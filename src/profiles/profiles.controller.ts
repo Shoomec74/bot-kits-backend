@@ -8,8 +8,8 @@ import {
   BadRequestException,
   UseGuards,
   Headers,
-  // Post,
-  // Query,
+  Post,
+  Query,
 } from '@nestjs/common';
 import { ProfilesService } from './profiles.service';
 import {
@@ -39,10 +39,11 @@ import { SingleAccountResponseBodyOK } from 'src/accounts/sdo/response-body.sdo'
 import { RolesGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AddUserRequestBody } from './sdo/request-body.sdo';
-// import { CombinedDto } from 'src/auth/dto/combined.dto';
-// import TypeAccount from 'src/accounts/types/type-account';
-import { AuthDtoPipe } from 'src/auth/pipe/auth-dto.pipe';
-import { FindProfileDto } from './dto/find-profile.dto';
+import TypeAccount from 'src/accounts/types/type-account';
+import { AdminCombinedDto } from 'src/auth/dto/admin-combined.dto';
+// import { FindProfileDto } from './dto/find-profile.dto';
+import { v4 as uuid } from 'uuid';
+import { AdminAuthDtoPipe } from 'src/auth/pipe/admin-auth-dto.pipe';
 
 @UseGuards(JwtGuard)
 @ApiTags('profiles')
@@ -51,7 +52,7 @@ import { FindProfileDto } from './dto/find-profile.dto';
 export class ProfilesController {
   constructor(
     private readonly profilesService: ProfilesService,
-    private readonly authDtoPipe: AuthDtoPipe,
+    private readonly adminAuthDtoPipe: AdminAuthDtoPipe,
   ) {}
   @ApiOkResponse({
     description: 'Профили успешно получены',
@@ -69,7 +70,7 @@ export class ProfilesController {
     return this.profilesService.findAll();
   }
 
-  @Get('add')
+  @Post('add')
   @UseGuards(RolesGuard)
   @Roles('admin')
   @ApiOperation({ summary: 'Добавление пользователя' })
@@ -80,12 +81,46 @@ export class ProfilesController {
   })
   @ApiBadRequestResponse({ description: 'Некорректные данные' })
   @ApiConflictResponse({
-    description: 'Пользователь не найден',
+    description: 'Аккаунт уже существует',
     type: AddUserResponseBodyNotOK,
   })
-  async addUser(@Body() findProfileDto: FindProfileDto) {
-    return await this.profilesService.addUser(findProfileDto);
+  async addUser(
+    @Body() adminCombinedDto: AdminCombinedDto,
+    @Query('ref') ref: string,
+  ) {
+    const password: string = uuid();
+    const newAccount: AdminCombinedDto = {
+      email: adminCombinedDto.email,
+      password: password,
+      username: adminCombinedDto.username,
+      phone: adminCombinedDto.phone,
+    };
+    const authDto = this.adminAuthDtoPipe.transform(newAccount, {
+      type: 'body',
+      data: 'adminCombinedDto',
+    });
+    return await this.profilesService.addUser(authDto, TypeAccount.LOCAL, ref);
   }
+
+  // Дополнительная реализация добавления пользователя админом.
+  // Необходимо оставить 1 вариант после уточнения постановки задачи с заказчиком
+  // @Get('add')
+  // @UseGuards(RolesGuard)
+  // @Roles('admin')
+  // @ApiOperation({ summary: 'Добавление пользователя' })
+  // @ApiBody({ type: AddUserRequestBody })
+  // @ApiCreatedResponse({
+  //   description: 'Успешное добавление пользователя',
+  //   type: AddUserResponseBodyOK,
+  // })
+  // @ApiBadRequestResponse({ description: 'Некорректные данные' })
+  // @ApiConflictResponse({
+  //   description: 'Пользователь не найден',
+  //   type: AddUserResponseBodyNotOK,
+  // })
+  // async addUser(@Body() findProfileDto: FindProfileDto) {
+  //   return await this.profilesService.addUser(findProfileDto);
+  // }
 
   @Get('me')
   @ApiBearerAuth()
@@ -192,36 +227,4 @@ export class ProfilesController {
   remove(@Param('id') id: string): Promise<Profile> {
     return this.profilesService.remove(id);
   }
-
-  // @Post('add')
-  // @UseGuards(RolesGuard)
-  // @Roles('admin')
-  // @ApiOperation({ summary: 'Добавление пользователя' })
-  // @ApiBody({ type: AddUserRequestBody })
-  // @ApiCreatedResponse({
-  //   description: 'Успешное добавление пользователя',
-  //   type: AddUserResponseBodyOK,
-  // })
-  // @ApiBadRequestResponse({ description: 'Некорректные данные' })
-  // @ApiConflictResponse({
-  //   description: 'Аккаунт уже существует',
-  //   type: AddUserResponseBodyNotOK,
-  // })
-  // async addUser(
-  //   @Body() combinedDto: CombinedDto,
-  //   @Query('ref') ref: string,
-  // ): Promise<Account> {
-  //   const newAccount: CombinedDto = {
-  //     email: combinedDto.email,
-  //     password: combinedDto.password,
-  //     username: combinedDto.username,
-  //     phone: combinedDto.phone,
-  //     avatar: combinedDto.avatar,
-  //   };
-  //   const authDto = this.authDtoPipe.transform(newAccount, {
-  //     type: 'body',
-  //     data: 'combinedDto',
-  //   });
-  //   return await this.profilesService.addUser(authDto, TypeAccount.LOCAL, ref);
-  // }
 }
