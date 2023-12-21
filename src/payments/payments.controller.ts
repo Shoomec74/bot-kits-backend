@@ -59,12 +59,14 @@ export class PaymentsController {
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiUnprocessableEntityResponse({ description: 'Неверный запрос' })
   @Post()
-  create(
+  async create(
     @Req() req,
     @Body() createPaymentDto: Omit<CreatePaymentDto, 'profile'>,
   ): Promise<Payment> {
     const profile = req.user;
-    return this.paymentsService.create({ ...createPaymentDto, profile });
+    const payment = await this.paymentsService.create({ ...createPaymentDto, profile });
+    await this.paymentsService.updateBalance(profile._id);
+    return payment;
   }
 
   @ApiOperation({
