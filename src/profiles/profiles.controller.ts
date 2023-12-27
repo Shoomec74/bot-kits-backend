@@ -113,7 +113,7 @@ export class ProfilesController {
   @ApiOperation({
     summary: 'Получить все аккаунты пользователя по id профиля',
   })
-  async findAccountByProfileId(@Param('id') id: string): Promise<Account[]> {
+  async findAccountsByProfileId(@Param('id') id: string): Promise<Account[]> {
     return await this.profilesService.findAccountsByProfileId(id);
   }
 
