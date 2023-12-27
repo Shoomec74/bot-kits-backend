@@ -47,7 +47,7 @@ export class PaymentsController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @Get()
-  userPayments(@Req() req): Promise<Payment[]> {
+  userPaymentsHistory(@Req() req): Promise<Payment[]> {
     const user = req.user;
     return this.paymentsService.findUsersAll(user);
   }
