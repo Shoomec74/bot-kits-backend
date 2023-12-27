@@ -51,7 +51,7 @@ export class BotsController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
-  async findMy(@Req() req): Promise<Bot[]> {
+  async findUserBots(@Req() req): Promise<Bot[]> {
     return await this.botsService.findAllByUser(req.user.id);
   }
 
@@ -153,7 +153,7 @@ export class BotsController {
     type: Bot,
   })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
-  getTemplate(@Param('id') templateId: string): Promise<Bot> {
+  getTemplateById(@Param('id') templateId: string): Promise<Bot> {
     return this.botsService.findOne(templateId);
   }
 
@@ -172,7 +172,7 @@ export class BotsController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
-  findOne(@Param('id') id: string): Promise<Bot> {
+  findOneById(@Param('id') id: string): Promise<Bot> {
     return this.botsService.findOne(id);
   }
 

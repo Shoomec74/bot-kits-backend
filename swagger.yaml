@@ -1063,7 +1063,7 @@ paths:
       security: *ref_13
   /dev/api/bots:
     get:
-      operationId: BotsController_findMy
+      operationId: BotsController_findUserBots
       summary: Получить ботов пользователя
       parameters: []
       responses:
@@ -1200,7 +1200,7 @@ paths:
       tags: *ref_14
       security: *ref_15
     get:
-      operationId: BotsController_getTemplate
+      operationId: BotsController_getTemplateById
       summary: Получение шаблона бота по id
       parameters:
         - name: id
@@ -1223,7 +1223,7 @@ paths:
       security: *ref_15
   /dev/api/bots/{id}:
     get:
-      operationId: BotsController_findOne
+      operationId: BotsController_findOneById
       summary: Получить данные бота по Id
       parameters:
         - name: id
@@ -2459,7 +2459,7 @@ components:
         debitDate:
           format: date-time
           type: string
-          example: 2023-12-20T18:06:04.234Z
+          example: 2023-12-27T04:01:27.280Z
       required:
         - status
         - cardMask
@@ -2473,7 +2473,7 @@ components:
         date:
           format: date-time
           type: string
-          example: 2023-12-20T18:06:04.236Z
+          example: 2023-12-27T04:01:27.281Z
         amount:
           type: number
           example: 1000
