@@ -12,17 +12,19 @@ import { ApiProperty } from '@nestjs/swagger';
 import TypeAccount from '../types/type-account';
 import Role from '../types/role';
 import { Types } from 'mongoose';
+import {
+  EMAIL_VALIDATE_MESSAGE,
+  EMAIL_EMPTY_MESSAGE,
+  PASSWORD_EMPTY_MESSAGE,
+} from 'src/utils/constants';
 
 class Credentials {
-  @IsEmail(
-    {},
-    { message: 'Email должен быть действительным адресом электронной почты' },
-  )
-  @IsNotEmpty({ message: 'Email не может быть пустым' })
+  @IsEmail({}, { message: EMAIL_VALIDATE_MESSAGE })
+  @IsNotEmpty({ message: EMAIL_EMPTY_MESSAGE })
   email: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'Password не может быть пустым' })
+  @IsNotEmpty({ message: PASSWORD_EMPTY_MESSAGE })
   password: string;
 
   @IsString()

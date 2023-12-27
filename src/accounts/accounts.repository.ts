@@ -11,6 +11,7 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { Account, AccountDocument } from './schema/account.schema';
 import TypeAccount from './types/type-account';
+import { USER_ALREADY_EXISTS_MESSAGE } from 'src/utils/constants';
 
 @Injectable()
 export class AccountsRepository {
@@ -37,9 +38,7 @@ export class AccountsRepository {
       return await accountNew.save();
     } catch (err) {
       if (err.code === 11000) {
-        throw new ConflictException(
-          'Пользователь с таким username или email уже существует',
-        );
+        throw new ConflictException(USER_ALREADY_EXISTS_MESSAGE);
       }
     }
   }
