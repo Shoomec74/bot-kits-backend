@@ -14,6 +14,7 @@ import { CreateBotDto } from 'src/bots/dto/create-bot.dto';
 import { CreateTemplateDto } from 'src/bots/dto/create-template.dto';
 import { UpdateBotDto } from 'src/bots/dto/update-bot.dto';
 import { Bot, BotDocument } from 'src/bots/schema/bots.schema';
+import { CreatePaymentDto } from 'src/payments/dto/create-payment.dto';
 import { CreateProfileDto } from 'src/profiles/dto/create-profile.dto';
 import { UpdateProfileDto } from 'src/profiles/dto/update-profile.dto';
 import { Profile } from 'src/profiles/schema/profile.schema';
@@ -36,6 +37,7 @@ export type Subjects = InferSubjects<
   | typeof CreateBotDto
   | typeof CreateProfileDto
   | typeof UpdateProfileDto
+  | typeof CreatePaymentDto
   | 'all'
 >;
 
@@ -62,6 +64,10 @@ export class AbilityFactory {
       can(Action.Manage, [CreateBotDto, UpdateBotDto]);
       //--Администраторы могут делать запросы по эндпоинтам связанные с профилем--//
       can(Action.Manage, UpdateProfileDto);
+      //--Администраторы могут получать историю платежей и добавлять в неё новые финансовые операции--//
+      can([Action.Read, Action.Create], CreatePaymentDto);
+      //--Администраторы НЕ могут удалять и изменять историю платежей--//
+      cannot([Action.Delete, Action.Update], CreatePaymentDto);
       //--Администраторы НЕ могут удалять чужие профиля и получать к ним доступ--//
       cannot(Action.Manage, CreateProfileDto);
       //--Администраторы НЕ имеют право на любые действия связанные с шаблонами--//

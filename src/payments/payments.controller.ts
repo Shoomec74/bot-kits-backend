@@ -26,10 +26,11 @@ import {
 } from '@nestjs/swagger';
 import { Payment } from './schema/payment.schema';
 import { CreatePaymentDto } from './dto/create-payment.dto';
-import { RolesGuard } from 'src/auth/guards/role.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthUser } from 'src/auth/decorators/auth-user.decorator';
 import { Profile } from 'src/profiles/schema/profile.schema';
+import { CheckAbility } from 'src/auth/decorators/ability.decorator';
+import { AbilityGuard } from 'src/auth/guards/ability.guard';
+import { Action } from 'src/ability/ability.factory';
 
 @ApiTags('payments')
 @ApiBearerAuth()
@@ -38,6 +39,9 @@ import { Profile } from 'src/profiles/schema/profile.schema';
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}
 
+  @CheckAbility({ action: Action.Read, subject: CreatePaymentDto })
+  @UseGuards(AbilityGuard)
+  @Get()
   @ApiOperation({
     summary: 'История платежей',
   })
@@ -46,12 +50,14 @@ export class PaymentsController {
     type: [Payment],
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
-  @Get()
   userPayments(@Req() req): Promise<Payment[]> {
     const user = req.user;
     return this.paymentsService.findUsersAll(user);
   }
 
+  @CheckAbility({ action: Action.Create, subject: CreatePaymentDto })
+  @UseGuards(AbilityGuard)
+  @Post()
   @ApiOperation({
     summary: 'Добавить данные финансовой операции',
   })
@@ -62,7 +68,6 @@ export class PaymentsController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiBadRequestResponse({ description: 'Неверный запрос' })
-  @Post()
   create(
     @AuthUser() profile: Profile,
     @Body() createPaymentDto: CreatePaymentDto,
@@ -78,6 +83,9 @@ export class PaymentsController {
     }
   }
 
+  @CheckAbility({ action: Action.Delete, subject: CreatePaymentDto })
+  @UseGuards(AbilityGuard)
+  @Delete(':id')
   @ApiOperation({
     summary: 'Удалить финансовую операцию',
   })
@@ -91,13 +99,13 @@ export class PaymentsController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
-  @Delete(':id')
   delete(@Param('id') id: string) {
     return this.paymentsService.delete(id);
   }
 
+  @CheckAbility({ action: Action.Update, subject: CreatePaymentDto })
+  @UseGuards(AbilityGuard)
+  @Patch(':id')
   @ApiOperation({
     summary: 'Обновить данные финансовой операции',
   })
@@ -114,9 +122,6 @@ export class PaymentsController {
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
   @ApiBadRequestResponse({ description: 'Неверный запрос' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
-  @Patch(':id')
   update(
     @AuthUser() profile: Profile,
     @Param('id') id: string,
