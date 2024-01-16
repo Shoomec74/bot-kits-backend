@@ -19,6 +19,8 @@ import { UpdatePlatformDto } from 'src/platforms/dto/update-platform.dto';
 import { CreateProfileDto } from 'src/profiles/dto/create-profile.dto';
 import { UpdateProfileDto } from 'src/profiles/dto/update-profile.dto';
 import { Profile } from 'src/profiles/schema/profile.schema';
+import { CreateTariffDto } from 'src/tariffs/dto/create-tariff.dto';
+import { UpdateTariffDto } from 'src/tariffs/dto/update-tariff.dto';
 
 //ability.factory.ts
 export enum Action {
@@ -40,6 +42,8 @@ export type Subjects = InferSubjects<
   | typeof UpdateProfileDto
   | typeof UpdatePlatformDto
   | typeof CreatePlatformDto
+  | typeof UpdateTariffDto
+  | typeof CreateTariffDto
   | 'all'
 >;
 
@@ -62,16 +66,23 @@ export class AbilityFactory {
 
     //--Здесь определяем правила доступа--//
     if (isAdmin) {
-      //--Администраторы могут делать запросы по эндпоинтам связанные с ботами--//
-      can(Action.Manage, [CreateBotDto, UpdateBotDto]);
       //--Администраторы могут делать запросы по эндпоинтам связанные с профилем--//
       can(Action.Manage, UpdateProfileDto);
+      //--Администраторы НЕ могут удалять чужие профиля и получать к ним доступ--//
+      cannot(Action.Manage, CreateProfileDto);
+
       //--Администраторы могут только получать платформы--//
       can(Action.Read, UpdatePlatformDto);
       //--Администраторы НЕ могут удалять, обновлять и создавать платформы--//
       cannot(Action.Manage, CreatePlatformDto);
-      //--Администраторы НЕ могут удалять чужие профиля и получать к ним доступ--//
-      cannot(Action.Manage, CreateProfileDto);
+
+      //--Администраторы могут только получать тарифы--//
+      can(Action.Create, UpdateTariffDto);
+      //--Администраторы НЕ могут удалять, изменять и создавать тарифы--//
+      cannot(Action.Manage, CreateTariffDto);
+
+      //--Администраторы могут делать запросы по эндпоинтам связанные с ботами--//
+      can(Action.Manage, [CreateBotDto, UpdateBotDto]);
       //--Администраторы НЕ имеют право на любые действия связанные с шаблонами--//
       cannot(Action.Manage, CreateTemplateDto).because(
         'Этот функционал только у супер администратора',

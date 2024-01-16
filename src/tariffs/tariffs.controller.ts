@@ -30,6 +30,9 @@ import { TariffsService } from './tariffs.service';
 import { CreateTariffDto } from './dto/create-tariff.dto';
 import { UpdateTariffDto } from './dto/update-tariff.dto';
 import { Tariff } from './schema/tariff.schema';
+import { CheckAbility } from 'src/auth/decorators/ability.decorator';
+import { Action } from 'src/ability/ability.factory';
+import { AbilityGuard } from 'src/auth/guards/ability.guard';
 
 @ApiTags('tariffs')
 @ApiBearerAuth()
@@ -38,6 +41,9 @@ import { Tariff } from './schema/tariff.schema';
 export class TariffsController {
   constructor(private readonly tariffsService: TariffsService) {}
 
+  @CheckAbility({ action: Action.Read, subject: UpdateTariffDto })
+  @UseGuards(AbilityGuard)
+  @Get()
   @ApiOperation({
     summary: 'Получить все тарифы',
   })
@@ -46,11 +52,13 @@ export class TariffsController {
     type: [Tariff],
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
-  @Get()
   findAllTariffs() {
     return this.tariffsService.findAll();
   }
 
+  @CheckAbility({ action: Action.Read, subject: UpdateTariffDto })
+  @UseGuards(AbilityGuard)
+  @Get(':id')
   @ApiOperation({
     summary: 'Получить тариф по id',
   })
@@ -65,11 +73,13 @@ export class TariffsController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
-  @Get(':id')
   findTariffToId(@Param('id') id: string) {
     return this.tariffsService.findOne(id);
   }
 
+  @CheckAbility({ action: Action.Create, subject: CreateTariffDto })
+  @UseGuards(AbilityGuard)
+  @Post()
   @ApiOperation({
     summary: 'Добавить новый тариф',
   })
@@ -81,13 +91,13 @@ export class TariffsController {
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiBadRequestResponse({ description: 'Неверный запрос' })
   @ApiConflictResponse({ description: 'Такой тариф уже существует' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
-  @Post()
   createTariff(@Body() createTariffDto: CreateTariffDto) {
     return this.tariffsService.create(createTariffDto);
   }
 
+  @CheckAbility({ action: Action.Update, subject: CreateTariffDto })
+  @UseGuards(AbilityGuard)
+  @Patch(':id')
   @ApiOperation({
     summary: 'Изменить данные тарифа по id',
   })
@@ -104,9 +114,6 @@ export class TariffsController {
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
   @ApiBadRequestResponse({ description: 'Неверный запрос' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
-  @Patch(':id')
   updateTariff(
     @Param('id') id: string,
     @Body() updateTariffDto: UpdateTariffDto,
@@ -114,6 +121,9 @@ export class TariffsController {
     return this.tariffsService.updateTariff(id, updateTariffDto);
   }
 
+  @CheckAbility({ action: Action.Delete, subject: CreateTariffDto })
+  @UseGuards(AbilityGuard)
+  @Delete(':id')
   @ApiOperation({
     summary: 'Удалить тариф по id',
   })
@@ -128,9 +138,6 @@ export class TariffsController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
-  @Delete(':id')
   removeTariff(@Param('id') id: string): Promise<Tariff> {
     return this.tariffsService.remove(id);
   }
