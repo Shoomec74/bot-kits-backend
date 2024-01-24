@@ -14,6 +14,8 @@ import { CreateBotDto } from 'src/bots/dto/create-bot.dto';
 import { CreateTemplateDto } from 'src/bots/dto/create-template.dto';
 import { UpdateBotDto } from 'src/bots/dto/update-bot.dto';
 import { Bot, BotDocument } from 'src/bots/schema/bots.schema';
+import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
+import UpdateNotificationDto from 'src/notifications/dto/update-notification.dto';
 import { CreatePlatformDto } from 'src/platforms/dto/create-platform.dto';
 import { UpdatePlatformDto } from 'src/platforms/dto/update-platform.dto';
 import { CreateProfileDto } from 'src/profiles/dto/create-profile.dto';
@@ -44,6 +46,8 @@ export type Subjects = InferSubjects<
   | typeof CreatePlatformDto
   | typeof UpdateTariffDto
   | typeof CreateTariffDto
+  | typeof UpdateNotificationDto
+  | typeof CreateNotificationDto
   | 'all'
 >;
 
@@ -81,13 +85,18 @@ export class AbilityFactory {
       //--Администраторы НЕ могут удалять, изменять и создавать тарифы--//
       cannot(Action.Manage, CreateTariffDto);
 
+      //--Администраторы могут только создавать уведомления--//
+      can(Action.Create, UpdateNotificationDto);
+      //--Администраторы НЕ могут удалять, изменять и получать уведомления--//
+      cannot(Action.Manage, CreateNotificationDto);
+
       //--Администраторы могут делать запросы по эндпоинтам связанные с ботами--//
       can(Action.Manage, [CreateBotDto, UpdateBotDto]);
       //--Администраторы НЕ имеют право на любые действия связанные с шаблонами--//
       cannot(Action.Manage, CreateTemplateDto).because(
         'Этот функционал только у супер администратора',
       );
-      //--Администраторы могут обновлять бота если они его создатели и если им ьыл предоставлен общий доступ--//
+      //--Администраторы могут обновлять бота если они его создатели и если им был предоставлен общий доступ--//
       can(Action.Update, this.botModel, (bot: Bot) => {
         return (
           bot.profile.equals(user._id) ||

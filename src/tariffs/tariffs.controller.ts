@@ -23,9 +23,6 @@ import {
 } from '@nestjs/swagger';
 
 import { JwtGuard } from 'src/auth/guards/jwtAuth.guards';
-import { RolesGuard } from 'src/auth/guards/role.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-
 import { TariffsService } from './tariffs.service';
 import { CreateTariffDto } from './dto/create-tariff.dto';
 import { UpdateTariffDto } from './dto/update-tariff.dto';
