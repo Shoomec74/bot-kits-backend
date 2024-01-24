@@ -15,6 +15,10 @@ import { CreateTemplateDto } from 'src/bots/dto/create-template.dto';
 import { UpdateBotDto } from 'src/bots/dto/update-bot.dto';
 import { Bot, BotDocument } from 'src/bots/schema/bots.schema';
 import { CreatePaymentDto } from 'src/payments/dto/create-payment.dto';
+import { CreateNotificationDto } from 'src/notifications/dto/create-notification.dto';
+import UpdateNotificationDto from 'src/notifications/dto/update-notification.dto';
+import { CreatePlatformDto } from 'src/platforms/dto/create-platform.dto';
+import { UpdatePlatformDto } from 'src/platforms/dto/update-platform.dto';
 import { CreateProfileDto } from 'src/profiles/dto/create-profile.dto';
 import { UpdateProfileDto } from 'src/profiles/dto/update-profile.dto';
 import { Profile } from 'src/profiles/schema/profile.schema';
@@ -38,6 +42,10 @@ export type Subjects = InferSubjects<
   | typeof CreateProfileDto
   | typeof UpdateProfileDto
   | typeof CreatePaymentDto
+  | typeof UpdatePlatformDto
+  | typeof CreatePlatformDto
+  | typeof UpdateNotificationDto
+  | typeof CreateNotificationDto
   | 'all'
 >;
 
@@ -60,21 +68,33 @@ export class AbilityFactory {
 
     //--Здесь определяем правила доступа--//
     if (isAdmin) {
-      //--Администраторы могут делать запросы по эндпоинтам связанные с ботами--//
-      can(Action.Manage, [CreateBotDto, UpdateBotDto]);
       //--Администраторы могут делать запросы по эндпоинтам связанные с профилем--//
       can(Action.Manage, UpdateProfileDto);
+      //--Администраторы НЕ могут удалять чужие профиля и получать к ним доступ--//
+      cannot(Action.Manage, CreateProfileDto);
+
       //--Администраторы могут получать историю платежей и добавлять в неё новые финансовые операции--//
       can([Action.Read, Action.Create], CreatePaymentDto);
       //--Администраторы НЕ могут удалять и изменять историю платежей--//
       cannot([Action.Delete, Action.Update], CreatePaymentDto);
-      //--Администраторы НЕ могут удалять чужие профиля и получать к ним доступ--//
-      cannot(Action.Manage, CreateProfileDto);
+
+      //--Администраторы могут только получать платформы--//
+      can(Action.Read, UpdatePlatformDto);
+      //--Администраторы НЕ могут удалять, обновлять и создавать платформы--//
+      cannot(Action.Manage, CreatePlatformDto);
+
+      //--Администраторы могут только создавать уведомления--//
+      can(Action.Create, UpdateNotificationDto);
+      //--Администраторы НЕ могут удалять, изменять и получать уведомления--//
+      cannot(Action.Manage, CreateNotificationDto);
+
+      //--Администраторы могут делать запросы по эндпоинтам связанные с ботами--//
+      can(Action.Manage, [CreateBotDto, UpdateBotDto]);
       //--Администраторы НЕ имеют право на любые действия связанные с шаблонами--//
       cannot(Action.Manage, CreateTemplateDto).because(
         'Этот функционал только у супер администратора',
       );
-      //--Администраторы могут обновлять бота если они его создатели и если им ьыл предоставлен общий доступ--//
+      //--Администраторы могут обновлять бота если они его создатели и если им был предоставлен общий доступ--//
       can(Action.Update, this.botModel, (bot: Bot) => {
         return (
           bot.profile.equals(user._id) ||
