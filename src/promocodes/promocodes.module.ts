@@ -7,6 +7,7 @@ import { ProfilesModule } from 'src/profiles/profiles.module';
 import { PromocodesRepository } from './promocodes.repository';
 import { Profile, ProfileSchema } from 'src/profiles/schema/profile.schema';
 import { Payment, PaymentSchema } from 'src/payments/schema/payment.schema';
+import { AbilityModule } from 'src/ability/ability.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { Payment, PaymentSchema } from 'src/payments/schema/payment.schema';
       { name: Profile.name, schema: ProfileSchema },
       { name: Payment.name, schema: PaymentSchema },
     ]),
+    AbilityModule,
   ],
   controllers: [PromocodesController],
   providers: [PromocodesService, PromocodesRepository],

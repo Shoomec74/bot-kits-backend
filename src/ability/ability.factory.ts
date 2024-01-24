@@ -21,6 +21,8 @@ import { UpdatePlatformDto } from 'src/platforms/dto/update-platform.dto';
 import { CreateProfileDto } from 'src/profiles/dto/create-profile.dto';
 import { UpdateProfileDto } from 'src/profiles/dto/update-profile.dto';
 import { Profile } from 'src/profiles/schema/profile.schema';
+import { CreatePromocodeDto } from 'src/promocodes/dto/create-promocode.dto';
+import { UpdatePromocodeDto } from 'src/promocodes/dto/update-promocode.dto';
 
 //ability.factory.ts
 export enum Action {
@@ -44,6 +46,8 @@ export type Subjects = InferSubjects<
   | typeof CreatePlatformDto
   | typeof UpdateNotificationDto
   | typeof CreateNotificationDto
+  | typeof UpdatePromocodeDto
+  | typeof CreatePromocodeDto
   | 'all'
 >;
 
@@ -80,6 +84,11 @@ export class AbilityFactory {
       can(Action.Create, UpdateNotificationDto);
       //--Администраторы НЕ могут удалять, изменять и получать уведомления--//
       cannot(Action.Manage, CreateNotificationDto);
+
+      //--Администраторы могут получить промокод по названию или id, а так же применить его--//
+      can(Action.Create, UpdatePromocodeDto);
+      //--Администраторы НЕ могут удалять, изменять, создавать и получать все промокоды--//
+      cannot(Action.Manage, CreatePromocodeDto);
 
       //--Администраторы могут делать запросы по эндпоинтам связанные с ботами--//
       can(Action.Manage, [CreateBotDto, UpdateBotDto]);

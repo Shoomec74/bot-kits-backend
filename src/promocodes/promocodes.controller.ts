@@ -28,8 +28,9 @@ import {
 } from '@nestjs/swagger';
 import { Promocode } from './schema/promocode.schema';
 import { JwtGuard } from 'src/auth/guards/jwtAuth.guards';
-import { RolesGuard } from 'src/auth/guards/role.guard';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { AbilityGuard } from 'src/auth/guards/ability.guard';
+import { Action } from 'src/ability/ability.factory';
+import { CheckAbility } from 'src/auth/decorators/ability.decorator';
 
 @UseGuards(JwtGuard)
 @ApiTags('promocodes')
@@ -38,6 +39,9 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 export class PromocodesController {
   constructor(private readonly promocodesService: PromocodesService) {}
 
+  @CheckAbility({ action: Action.Create, subject: CreatePromocodeDto })
+  @UseGuards(AbilityGuard)
+  @Post()
   @ApiOperation({
     summary: 'Добавить новый промокод',
   })
@@ -48,13 +52,13 @@ export class PromocodesController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiConflictResponse({ description: 'Такой промокод уже существует' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
-  @Post()
   create(@Body() createPromocodeDto: CreatePromocodeDto): Promise<Promocode> {
     return this.promocodesService.create(createPromocodeDto);
   }
 
+  @CheckAbility({ action: Action.Read, subject: CreatePromocodeDto })
+  @UseGuards(AbilityGuard)
+  @Get()
   @ApiOperation({
     summary: 'Получить все промокоды',
   })
@@ -63,13 +67,13 @@ export class PromocodesController {
     type: [Promocode],
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
-  @Get()
   findAll(): Promise<Promocode[]> {
     return this.promocodesService.findAll();
   }
 
+  @CheckAbility({ action: Action.Read, subject: UpdatePromocodeDto })
+  @UseGuards(AbilityGuard)
+  @Get('promocode')
   @ApiOperation({
     summary: 'Получить промокод по названию',
   })
@@ -78,11 +82,12 @@ export class PromocodesController {
     type: [Promocode],
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
-  @Get('promocode')
   async findOneByCode(@Query('code') code: string): Promise<Promocode> {
     return this.promocodesService.findOneByCode(code);
   }
 
+  @CheckAbility({ action: Action.Update, subject: UpdatePromocodeDto })
+  @UseGuards(AbilityGuard)
   @Patch('promocode')
   @ApiOperation({
     summary: 'Использовать промокод 1 раз',
@@ -99,6 +104,9 @@ export class PromocodesController {
     return this.promocodesService.updateByCode(code, req.user.id);
   }
 
+  @CheckAbility({ action: Action.Read, subject: UpdatePromocodeDto })
+  @UseGuards(AbilityGuard)
+  @Get(':id')
   @ApiOperation({
     summary: 'Получить промокод по id',
   })
@@ -113,11 +121,13 @@ export class PromocodesController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
-  @Get(':id')
   findOne(@Param('id') id: string): Promise<Promocode> {
     return this.promocodesService.findOne(id);
   }
 
+  @CheckAbility({ action: Action.Update, subject: CreatePromocodeDto })
+  @UseGuards(AbilityGuard)
+  @Patch(':id')
   @ApiOperation({
     summary: 'Изменить данные промокода по id',
   })
@@ -134,9 +144,6 @@ export class PromocodesController {
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
   @ApiBadRequestResponse({ description: 'Неверный запрос' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
-  @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updatePromocodeDto: UpdatePromocodeDto,
@@ -144,6 +151,9 @@ export class PromocodesController {
     return this.promocodesService.update(id, updatePromocodeDto);
   }
 
+  @CheckAbility({ action: Action.Delete, subject: CreatePromocodeDto })
+  @UseGuards(AbilityGuard)
+  @Delete(':id')
   @ApiOperation({
     summary: 'Удалить промокод по id',
   })
@@ -158,9 +168,6 @@ export class PromocodesController {
   })
   @ApiForbiddenResponse({ description: 'Отказ в доступе' })
   @ApiNotFoundResponse({ description: 'Ресурс не найден' })
-  @UseGuards(RolesGuard)
-  @Roles('admin')
-  @Delete(':id')
   remove(@Param('id') id: string): Promise<Promocode> {
     return this.promocodesService.remove(id);
   }
