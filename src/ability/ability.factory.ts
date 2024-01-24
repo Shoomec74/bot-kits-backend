@@ -86,7 +86,7 @@ export class AbilityFactory {
       cannot(Action.Manage, CreateNotificationDto);
 
       //--Администраторы могут получить промокод по названию или id, а так же применить его--//
-      can(Action.Create, UpdatePromocodeDto);
+      can(Action.Manage, UpdatePromocodeDto);
       //--Администраторы НЕ могут удалять, изменять, создавать и получать все промокоды--//
       cannot(Action.Manage, CreatePromocodeDto);
 
